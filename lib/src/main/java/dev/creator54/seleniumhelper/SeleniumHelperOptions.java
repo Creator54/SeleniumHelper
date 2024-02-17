@@ -2,6 +2,7 @@ package dev.creator54.seleniumhelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class SeleniumHelperOptions {
@@ -14,7 +15,7 @@ public class SeleniumHelperOptions {
 		// Set default values
 		this.timeoutInSeconds = 10;
 		this.screenshotsState = true;
-		this.firefoxOptions = new FirefoxOptions();
+		this.firefoxOptions = new FirefoxOptions().setLogLevel(FirefoxDriverLogLevel.ERROR);
 	}
 
 	public int getTimeoutInSeconds() {

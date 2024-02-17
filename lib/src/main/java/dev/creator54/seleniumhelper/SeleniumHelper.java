@@ -106,7 +106,6 @@ public class SeleniumHelper {
 		try {
 			logger.info("STARTING ACTION: {}", action);
 			if (driver != null) {
-				driver.close();
 				driver.quit();
 				logger.info("ACTION SUCCESS: {}", action);
 			} else {
