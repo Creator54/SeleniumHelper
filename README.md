@@ -19,18 +19,26 @@ To use SeleniumHelper in your Maven project, add the following repository to you
         </snapshots>
     </repository>
 </repositories>
-```
 
-### Dependency
-
-Add the SeleniumHelper dependency to your pom.xml:
-
-```xml
 <dependency>
     <groupId>dev.creator54</groupId>
     <artifactId>selenium-helper</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
+```
+
+### Gradle
+To use SeleniumHelper in your Maven project, add the following to your build.gradle:
+```gradle
+repositories {
+    maven {
+        url 'https://github.com/creator54/seleniumhelper/releases/latest/download/'
+    }
+}
+
+dependencies {
+    implementation 'dev.creator54:selenium-helper:1.0-SNAPSHOT'
+}
 ```
 
 ## Example Usage
