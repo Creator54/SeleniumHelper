@@ -229,6 +229,24 @@ public class SeleniumHelper {
 		}
 	}
 
+	public void sendKeysToElement(By locator, Keys keys) {
+		final String action = "Sending keys to element: " + locator + ", value: " + String.valueOf(keys);
+		logActionStart(action); // Log the start of the action
+		String actualValue = "";
+		String newValue = "";
+
+		try {
+			WebElement element = findElement(locator);
+
+			element.sendKeys(keys);
+
+			logActionSuccess(action); // Log the successful completion of the action
+		} catch (Exception e) {
+			logActionFailure(action);
+			throw e; // Rethrow the exception to maintain the error flow
+		}
+	}
+
 	public void clickElement(By locator) {
 		final String action = "Clicking element: " + locator;
 		logActionStart(action); // Log the start of an action
