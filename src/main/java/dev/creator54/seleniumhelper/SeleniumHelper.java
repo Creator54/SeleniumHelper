@@ -20,7 +20,7 @@ public class SeleniumHelper {
 	private static WebDriver driver;
 	private static WebDriverWait wait;
 	private static SeleniumHelper instance;
-	private static final String SCREENSHOTS_DIR = ".." + File.separator + "screenshots" + File.separator;
+	private static final String SCREENSHOTS_DIR = "screenshots" + File.separator;
 	private int stepCount = 0;
 	private final SeleniumHelperOptions options;
 	private static long startTime;

@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 
 public class JSONHelper {
-	private static String LOCATORS_FILE_PATH = ".."+ File.separator + "config.json";
+	private static String LOCATORS_FILE_PATH = "config.json";
 	private static final Logger logger = LogManager.getLogger(JSONHelper.class);
 
 	public JSONHelper() {
