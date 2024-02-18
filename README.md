@@ -13,22 +13,24 @@
 To use SeleniumHelper in your Maven project, add the following repository to your `pom.xml`:
 
 ```xml
-<repositories>
+    <repositories>
     <repository>
         <id>github</id>
         <name>SeleniumHelper Package</name>
-        <url>https://github.com/creator54/seleniumhelper/releases/latest/download/selenium-helper-1.0-SNAPSHOT.jar</url>
+        <url>https://github.com/creator54/seleniumhelper/releases/download/</url>
         <snapshots>
             <enabled>true</enabled>
         </snapshots>
     </repository>
 </repositories>
 
-<dependency>
-    <groupId>dev.creator54</groupId>
-    <artifactId>selenium-helper</artifactId>
-    <version>1.0-SNAPSHOT</version>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>dev.creator54</groupId>
+        <artifactId>selenium-helper</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Example Usage
