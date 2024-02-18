@@ -1,6 +1,10 @@
 # SeleniumHelper
 
-SeleniumHelper is a Java library that provides a framework for Selenium automation testing. It includes utilities for logging with Log4j, handling JSON data with json-simple, and capturing screenshots during test execution. Additionally, it offers wrappers around Selenium functions to simplify test development and enhance test reporting.
+## Features
+- Automated logging with Log4j integration
+- JSON data handling with json-simple library
+- Screenshot capture utility for each action
+- Simplified Selenium function wrappers using `config.json` for faster and resilient automation
 
 ## Usage
 
@@ -25,20 +29,6 @@ To use SeleniumHelper in your Maven project, add the following repository to you
     <artifactId>selenium-helper</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
-```
-
-### Gradle
-To use SeleniumHelper in your Maven project, add the following to your build.gradle:
-```gradle
-repositories {
-    maven {
-        url 'https://github.com/creator54/seleniumhelper/releases/latest/download/'
-    }
-}
-
-dependencies {
-    implementation 'dev.creator54:selenium-helper:1.0-SNAPSHOT'
-}
 ```
 
 ## Example Usage
@@ -84,12 +74,6 @@ public class MyTest {
 	}
 }
 ```
-
-## Features
-- Automated logging with Log4j integration 
-- JSON data handling with json-simple library 
-- Screenshot capture utility for each action
-- Simplified Selenium function wrappers using `config.json` for faster and resilient automation
 
 ## LICENSE
 ```MIT
