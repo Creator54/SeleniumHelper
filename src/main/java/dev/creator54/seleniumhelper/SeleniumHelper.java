@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.devtools.v121.indexeddb.model.Key;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,6 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -39,17 +41,29 @@ public class SeleniumHelper {
 	}
 
 	private void logActionFailure(String action) {
+		// Trim the action string
 		action = action.trim();
-		// Log with detailed error information including stack trace
+
+		// Log the error
 		logger.error("ACTION FAILED: {}", action);
-		try {
-			if (options.getScreenshotsState() && driver != null) {
+
+		// Attempt to take a screenshot if conditions are met
+		if (options.getScreenshotsState() && driver != null) {
+			try {
 				takeScreenshot(action + " - FAILED");
+			} catch (Exception e) {
+				logger.error("Error while taking screenshot");
 			}
-		} catch (Exception e) {
-			logger.error("Error while taking screenshot");
-			quit(); // Quit the browser if any failure
 		}
+
+		// Quit the browser
+		quit();
+
+		// Print total time spent
+		logger.info("Total time spent: {} seconds", (System.nanoTime() - startTime) / 1000000000.0);
+
+		// Stop further execution by throwing an exception
+		throw new RuntimeException();
 	}
 
 	private SeleniumHelper(SeleniumHelperOptions options) {
@@ -92,6 +106,7 @@ public class SeleniumHelper {
 		try {
 			FirefoxOptions firefoxOptions = options.getFirefoxOptions();
 			driver = new FirefoxDriver(firefoxOptions);
+			wait = new WebDriverWait(driver, Duration.ofSeconds(options.getTimeoutInSeconds()));
 		} catch (Exception e) {
 			logActionFailure(action); // Log other exceptions
 			throw e; // Rethrow to allow higher-level handlers to catch
@@ -116,11 +131,6 @@ public class SeleniumHelper {
 		} finally {
 			driver = null;
 		}
-
-		long endTime = System.nanoTime();
-
-		// Print total time spent
-		logger.info("Total time spent: {} seconds", (endTime - startTime) / 1000000000.0);
 	}
 
 	public boolean get(String url) {
@@ -191,8 +201,8 @@ public class SeleniumHelper {
 		String newValue = "";
 
 		try {
-			WebElement element = findElement(locator); // Utilize the refactored findElement method that already includes
-			// structured logging
+			WebElement element = findElement(locator);
+
 			element.sendKeys(value);
 
 			// Re-find the element to ensure the value is actually sent to the element
@@ -200,6 +210,7 @@ public class SeleniumHelper {
 			actualValue = element.getAttribute("value");
 
 			newValue = value.trim(); // Remove any leading or trailing whitespace from the value
+			actualValue = actualValue.trim(); // Remove any leading or trailing whitespace from the actual value
 
 			if (actualValue.equals(newValue)) {
 				logActionSuccess(action); // Log the successful completion of the action
