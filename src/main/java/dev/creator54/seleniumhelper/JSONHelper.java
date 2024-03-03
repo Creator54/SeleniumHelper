@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class JSONHelper {
 	private static String LOCATORS_FILE_PATH = "config.json";
@@ -59,7 +60,6 @@ public class JSONHelper {
 			throw new RuntimeException(e);
 		}
 	}
-
 	public By get(String name) {
 		String locatorType = getValue(name + "#type");
 		String locatorValue = getValue(name + "#locator");
@@ -102,6 +102,100 @@ public class JSONHelper {
 				throw new IllegalArgumentException("Invalid locator type: " + locatorType);
 			}
 		};
+	}
+
+	public WebElement getElement(String name) {
+		String locatorType = getValue(name + "#type");
+		String locatorValue = getValue(name + "#locator");
+
+		SeleniumHelper seleniumHelper = SeleniumHelper.getInstance();
+		By locator = switch (locatorType.toLowerCase()) {
+			case "id" -> {
+				logger.info("Retrieved locator of type 'id' for JSON path '{}'", name);
+				yield By.id(locatorValue);
+			}
+			case "name" -> {
+				logger.info("Retrieved locator of type 'name' for JSON path '{}'", name);
+				yield By.name(locatorValue);
+			}
+			case "xpath" -> {
+				logger.info("Retrieved locator of type 'xpath' for JSON path '{}'", name);
+				yield By.xpath(locatorValue);
+			}
+			case "css" -> {
+				logger.info("Retrieved locator of type 'css' for JSON path '{}'", name);
+				yield By.cssSelector(locatorValue);
+			}
+			case "linktext" -> {
+				logger.info("Retrieved locator of type 'linktext' for JSON path '{}'", name);
+				yield By.linkText(locatorValue);
+			}
+			case "partiallinktext" -> {
+				logger.info("Retrieved locator of type 'partiallinktext' for JSON path '{}'", name);
+				yield By.partialLinkText(locatorValue);
+			}
+			case "tagname" -> {
+				logger.info("Retrieved locator of type 'tagname' for JSON path '{}'", name);
+				yield By.tagName(locatorValue);
+			}
+			case "classname" -> {
+				logger.info("Retrieved locator of type 'classname' for JSON path '{}'", name);
+				yield By.className(locatorValue);
+			}
+			default -> {
+				logger.error("Invalid locator type: '{}'", locatorType);
+				throw new IllegalArgumentException("Invalid locator type: " + locatorType);
+			}
+		};
+
+		return seleniumHelper.findElement(locator);
+	}
+
+	public List<WebElement> getElements(String name) {
+		String locatorType = getValue(name + "#type");
+		String locatorValue = getValue(name + "#locator");
+
+		SeleniumHelper seleniumHelper = SeleniumHelper.getInstance();
+		By locator = switch (locatorType.toLowerCase()) {
+			case "id" -> {
+				logger.info("Retrieved locator of type 'id' for JSON path '{}'", name);
+				yield By.id(locatorValue);
+			}
+			case "name" -> {
+				logger.info("Retrieved locator of type 'name' for JSON path '{}'", name);
+				yield By.name(locatorValue);
+			}
+			case "xpath" -> {
+				logger.info("Retrieved locator of type 'xpath' for JSON path '{}'", name);
+				yield By.xpath(locatorValue);
+			}
+			case "css" -> {
+				logger.info("Retrieved locator of type 'css' for JSON path '{}'", name);
+				yield By.cssSelector(locatorValue);
+			}
+			case "linktext" -> {
+				logger.info("Retrieved locator of type 'linktext' for JSON path '{}'", name);
+				yield By.linkText(locatorValue);
+			}
+			case "partiallinktext" -> {
+				logger.info("Retrieved locator of type 'partiallinktext' for JSON path '{}'", name);
+				yield By.partialLinkText(locatorValue);
+			}
+			case "tagname" -> {
+				logger.info("Retrieved locator of type 'tagname' for JSON path '{}'", name);
+				yield By.tagName(locatorValue);
+			}
+			case "classname" -> {
+				logger.info("Retrieved locator of type 'classname' for JSON path '{}'", name);
+				yield By.className(locatorValue);
+			}
+			default -> {
+				logger.error("Invalid locator type: '{}'", locatorType);
+				throw new IllegalArgumentException("Invalid locator type: " + locatorType);
+			}
+		};
+
+		return seleniumHelper.findElements(locator);
 	}
 
 	private JSONObject traverseJsonObject(ArrayList<String> parts, JSONObject jsonObject) {
