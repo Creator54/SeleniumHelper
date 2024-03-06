@@ -151,7 +151,7 @@ public class SeleniumHelper {
 	}
 
 	public WebElement findElement(By locator) {
-		String action = "Finding element: " + locator;
+		String action = "Finding element: " + locator.toString();
 		logActionStart(action); // Log the start of the find element action
 
 		try {
@@ -180,7 +180,7 @@ public class SeleniumHelper {
 	}
 
 	public List<WebElement> findElements(By locator) {
-		final String action = "Finding elements: " + locator;
+		final String action = "Finding elements: " + locator.toString();
 		logActionStart(action); // Announce the start of the action to find elements
 
 		try {
@@ -194,7 +194,7 @@ public class SeleniumHelper {
 	}
 
 	public void sendKeysToElement(By locator, String value) {
-		final String action = "Sending keys to element: " + locator + ", value: " + value;
+		final String action = "Sending keys to element: " + locator.toString() + ", value: " + value;
 		logActionStart(action); // Log the start of the action
 		String actualValue = "";
 		String newValue = "";
@@ -217,7 +217,7 @@ public class SeleniumHelper {
 			}
 
 			// Log and throw exception if the value wasn't set after maximum retries
-			throw new RuntimeException("Failed to send keys to element: " + locator + ". " +
+			throw new RuntimeException("Failed to send keys to element: " + locator.toString() + ". " +
 					"Expected value: '" + newValue + "', Actual value: '" + actualValue + "'");
 		} catch (Exception e) {
 			// Log the failure to send keys to the element
@@ -227,9 +227,43 @@ public class SeleniumHelper {
 			throw e; // Rethrow the exception to maintain the error flow
 		}
 	}
+	public void sendKeysToElement(By locator, String value, boolean pressEnter) {
+		final String action = "Sending keys to element: " + locator.toString() + ", value: " + value;
+		logActionStart(action); // Log the start of the action
+		String actualValue = "";
+		String newValue = "";
 
+		try {
+			WebElement element = findElement(locator);
+
+			element.sendKeys(value);
+			element.sendKeys(Keys.ENTER);
+
+			// Re-find the element to ensure the value is actually sent to the element
+			element = findElement(locator);
+			actualValue = element.getAttribute("value");
+
+			newValue = value.trim(); // Remove any leading or trailing whitespace from the value
+			actualValue = actualValue.trim(); // Remove any leading or trailing whitespace from the actual value
+
+			if (actualValue.equals(newValue)) {
+				logActionSuccess(action); // Log the successful completion of the action
+				return; // Exit the method if value was successfully set
+			}
+
+			// Log and throw exception if the value wasn't set after maximum retries
+			throw new RuntimeException("Failed to send keys to element: " + locator.toString() + ". " +
+					"Expected value: '" + newValue + "', Actual value: '" + actualValue + "'");
+		} catch (Exception e) {
+			// Log the failure to send keys to the element
+			String failureMessage = action + " - Keys were sent but the value wasn't set as expected. " +
+					"Expected value: '" + newValue + "', Actual value: '" + actualValue + "'";
+			logActionFailure(failureMessage);
+			throw e; // Rethrow the exception to maintain the error flow
+		}
+	}
 	public void sendKeysToElement(By locator, Keys keys) {
-		final String action = "Sending keys to element: " + locator + ", value: " + String.valueOf(keys);
+		final String action = "Sending keys to element: " + locator.toString() + ", value: " + String.valueOf(keys);
 		logActionStart(action); // Log the start of the action
 		String actualValue = "";
 		String newValue = "";
@@ -247,7 +281,7 @@ public class SeleniumHelper {
 	}
 
 	public void clickElement(By locator) {
-		final String action = "Clicking element: " + locator;
+		final String action = "Clicking element: " + locator.toString();
 		logActionStart(action); // Log the start of an action
 
 		try {
@@ -259,7 +293,7 @@ public class SeleniumHelper {
 
 			// Throw a new exception with both the specific action and the original
 			// exception for context
-			throw new RuntimeException("Failed to click element: " + locator + ". " + e.getMessage(), e);
+			throw new RuntimeException("Failed to click element: " + locator.toString() + ". " + e.getMessage(), e);
 		}
 	}
 
