@@ -60,6 +60,44 @@ public class JSONHelper {
 			throw new RuntimeException(e);
 		}
 	}
+	public List<String> getValues(String path) {
+		JSONParser parser = new JSONParser();
+
+		try (FileReader reader = new FileReader(LOCATORS_FILE_PATH)) {
+			JSONObject jsonObject = (JSONObject) parser.parse(reader);
+			ArrayList<String> parts = new ArrayList<>(List.of(path.split("#")));
+
+			JSONObject nestedObject = traverseJsonObject(parts, jsonObject);
+
+			if (nestedObject != null) {
+				return getValuesFromNestedObject(nestedObject);
+			} else {
+				throw new IllegalArgumentException("Invalid JSON path: " + path);
+			}
+		} catch (IOException | ParseException e) {
+			logger.error("Error reading JSON file: {}", e.getMessage());
+			throw new RuntimeException(e);
+		}
+	}
+
+	private List<String> getValuesFromNestedObject(JSONObject jsonObject) {
+		List<String> values = new ArrayList<>();
+		for (Object value : jsonObject.values()) {
+			if (value instanceof JSONObject) {
+				values.addAll(getKeys((JSONObject) value));
+			}
+		}
+		return values;
+	}
+
+	private List<String> getKeys(JSONObject jsonObject) {
+		List<String> keys = new ArrayList<>();
+		for (Object key : jsonObject.keySet()) {
+			keys.add((String) key);
+		}
+		return keys;
+	}
+
 	public By get(String name) {
 		String locatorType = getValue(name + "#type");
 		String locatorValue = getValue(name + "#locator");
